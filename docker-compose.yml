@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+mongodb:
+  environment:
+    MONGO_INITDB_DATABASE: local
+  hostname: mongodb
+  image: mongo
+  ports:
+    - "27017:27017"
+  volumes: 
+    - ./data-mongodb:/data/db
+  
+  web:
+    image: app
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/django_mongodb_docker
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongodb
